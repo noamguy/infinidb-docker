@@ -29,7 +29,10 @@ RUN ln -s infinidb-4.6.2-1 infinidb
 RUN echo installing infinidb
 RUN cd infinidb&&./configure --prefix=$HOME/infinidb >> install.log&&make >> install.log&&make install >> install.log
 
-RUN $HOME/infinidb&&ls -l
+RUN mv ./root/infinidb /usr/local/Calpont
+RUN /usr/local/Calpont/bin/post-install
+RUN /usr/local/Calpont/bin/postConfigure
 
 EXPOSE 3306
-CMD [ "service infinidb start" ]
+RUN service infinidb start
+RUN find . -name *post-install*
