@@ -16,20 +16,26 @@ RUN apt-get -y install wget
 RUN mkdir infinidb-src
 
 RUN cd infinidb-src
+RUN echo Downloading infinidb-mysql
 RUN wget -Omysql-4.6.2-1.tar.gz https://github.com/infinidb/mysql/archive/4.6.2-1.tar.gz
 RUN tar -zxf mysql-4.6.2-1.tar.gz
 RUN ln -s mysql-4.6.2-1 mysql
-RUN echo installing infinidb-mysql
-RUN cd ./mysql&&./configure --prefix=$HOME/infinidb/mysql >> install.log&&make >> install.log&&make install >> install.log
 
-RUN cd infinidb-src
+RUN echo Downloading infinidb
 RUN wget -Oinfinidb-4.6.2-1.tar.gz https://github.com/infinidb/infinidb/archive/4.6.2-1.tar.gz
 RUN tar -zxf infinidb-4.6.2-1.tar.gz
 RUN ln -s infinidb-4.6.2-1 infinidb
+
+RUN echo installing infinidb-mysql
+RUN cd infinidb-src
+RUN cd ./mysql&&./configure --prefix=$HOME/infinidb/mysql >> install.log&&make >> install.log&&make install >> install.log
+
 RUN echo installing infinidb
+RUN cd infinidb-src
 RUN cd infinidb&&./configure --prefix=$HOME/infinidb >> install.log&&make >> install.log&&make install >> install.log
 
 RUN mv ./root/infinidb /usr/local/Calpont
+RUN ls -l /usr/local/Calpont/bin/
 RUN /usr/local/Calpont/bin/post-install
 RUN /usr/local/Calpont/bin/postConfigure
 
