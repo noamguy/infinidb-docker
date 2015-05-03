@@ -28,16 +28,20 @@ RUN ln -s infinidb-4.6.2-1 infinidb
 
 RUN echo installing infinidb-mysql
 RUN cd infinidb-src
-RUN cd ./mysql&&./configure --prefix=$HOME/infinidb/mysql >> install.log&&make >> install.log&&make install >> install.log
+RUN cd ./mysql&&./configure --prefix=$HOME/infinidb/mysql&&make&&make install
 
 RUN echo installing infinidb
 RUN cd infinidb-src
-RUN cd infinidb&&./configure --prefix=$HOME/infinidb >> install.log&&make >> install.log&&make install >> install.log
+RUN cd infinidb&&./configure --prefix=$HOME/infinidb&&make&&make install
 
 RUN mv ./root/infinidb /usr/local/Calpont
-RUN ls -l /usr/local/Calpont/bin/
+RUN touch /etc/ld.so.conf.d/infinidb.conf
+RUN echo /usr/local/Calpont/lib > /etc/ld.so.conf.d/infinidb.conf && echo /usr/local/Calpont/mysql/lib/ >> /etc/ld.so.conf.d/infinidb.conf && echo /usr/local/Calpont/mysql/lib/mysql/ >> /etc/ld.so.conf.d/infinidb.conf
+RUN ldconfig
+RUN cp /usr/local/Calpont/etc/Calpont.xml.singleserver /usr/local/Calpont/etc/Calpont.xml.rpmsave
 RUN /usr/local/Calpont/bin/post-install
-RUN /usr/local/Calpont/bin/postConfigure
+RUN /usr/local/Calpont/bin/postConfigure -n
+RUN /usr/local/Calpont/bin/calpontAlias
 
 EXPOSE 3306
 RUN service infinidb start
