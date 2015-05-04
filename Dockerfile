@@ -45,4 +45,3 @@ RUN /usr/local/Calpont/bin/calpontAlias
 
 EXPOSE 3306
 RUN service infinidb start
-RUN find . -name *post-install*
