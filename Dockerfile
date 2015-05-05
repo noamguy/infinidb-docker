@@ -44,4 +44,9 @@ RUN /usr/local/Calpont/bin/postConfigure -n
 RUN /usr/local/Calpont/bin/calpontAlias
 
 EXPOSE 3306
-RUN service infinidb start
+RUN /etc/init.d/infinidb status
+RUN /etc/init.d/infinidb stop
+RUN /etc/init.d/infinidb status
+RUN /etc/init.d/infinidb start
+RUN /etc/init.d/infinidb status
+ENTRYPOINT ["service infinidb start"]
