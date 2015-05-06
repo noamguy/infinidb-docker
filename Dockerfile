@@ -40,13 +40,13 @@ RUN echo /usr/local/Calpont/lib > /etc/ld.so.conf.d/infinidb.conf && echo /usr/l
 RUN ldconfig
 RUN cp /usr/local/Calpont/etc/Calpont.xml.singleserver /usr/local/Calpont/etc/Calpont.xml.rpmsave
 RUN /usr/local/Calpont/bin/post-install
-RUN /usr/local/Calpont/bin/postConfigure -n
+RUN /usr/local/Calpont/bin/postConfigure -n -s
 RUN /usr/local/Calpont/bin/calpontAlias
 
+RUN echo installing supervisor
+RUN apt-get -y install supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 EXPOSE 3306
-RUN /etc/init.d/infinidb status
-RUN /etc/init.d/infinidb stop
-RUN /etc/init.d/infinidb status
-RUN /etc/init.d/infinidb start
-RUN /etc/init.d/infinidb status
-ENTRYPOINT ["service infinidb start"]
+
+CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
