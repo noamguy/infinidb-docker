@@ -47,6 +47,8 @@ RUN echo installing supervisor
 RUN apt-get -y install supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+COPY infinidb_non_demonized_healper.sh .
+
 EXPOSE 3306
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
